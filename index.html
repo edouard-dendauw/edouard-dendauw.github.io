@@ -6,912 +6,964 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>E. Dendauw | Portfolio</title>
-  <link rel="icon" type="image/png" href="assets/icon.png" />
-  <style>
-    /* =====================================================
-       GLOBAL THEME + LAYOUT VARIABLES
-       ===================================================== */
-    :root{
-        /* ===== COLOR PALETTE ===== */
-        --bg:#151515;
-        --card:#000;
-        --text:#eaeaea;
-        --muted:#9a9a9a;
-        --link:#99c2ff;
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>E. Dendauw | Portfolio</title>
+    <link rel="icon" type="image/png" href="assets/icon.png" />
+    <style>
+        /* =====================================================
+           GLOBAL THEME + LAYOUT VARIABLES
+           ===================================================== */
+        :root{
+            /* ===== COLOR PALETTE ===== */
+            --bg: #1e1e1e;
+            --card:#000;
+            --text:#fff;
+            --muted:#999;
+            --link:#99c2ff;
 
-        --header-bg: var(--card);
-        --pill-bg-dark: rgba(255,255,255,.06);
-        --pill-bg-light: rgba(0,0,0,.06);
-        --hover-bg-dark: rgba(255,255,255,.06);
+            --header-bg: var(--card);
+            --pill-bg-dark: rgba(255,255,255,.1);
+            --pill-bg-light: rgba(0,0,0,.06);
+            --hover-bg: rgba(255,255,255,.15);
 
-        --affil-dark: rgba(234,234,234,.92);
-        --affil-light: rgba(17,17,17,.85);
+            --affil-dark: rgba(234,234,234,.92);
+            --affil-light: rgba(17,17,17,.85);
 
-        /* ===== LAYOUT ===== */
-        --gap:12px;
-        --sidebarW:280px;
-        --radius:10px;
-        --headerH: 0px; /* set by JS */
-        --stickyTop: calc(var(--headerH) + (var(--gap) / 2));
-    }
+            /* ===== LAYOUT ===== */
+            --gap:12px;
+            --sidebarW:286px;
+            --radius:10px;
+            --headerH: 0px; /* set by JS */
+            --stickyTop: var(--headerH);
+        }
 
-    /* =====================================================
-       LIGHT THEME OVERRIDES
-       ===================================================== */
-    [data-theme="light"]{
-        --bg:#eee;
-        --card:#fff;
-        --text:#111;
-        --muted:#555;
-        --link:#0047cc;
-
-        --header-bg: var(--card);
-    }
-
-    /* =====================================================
-       SYSTEM PREFERENCE FALLBACK
-       ===================================================== */
-    @media (prefers-color-scheme: light){
-        :root:not([data-theme]){
+        /* =====================================================
+           LIGHT THEME OVERRIDES
+           ===================================================== */
+        [data-theme="light"]{
             --bg:#eee;
             --card:#fff;
             --text:#111;
             --muted:#555;
             --link:#0047cc;
-        }
-    }
 
-    /* =====================================================
-       BASE RESET + TYPOGRAPHY
-       ===================================================== */
-    *{ box-sizing:border-box; }
-    html,body{ height:100%; }
-
-    body{
-        margin:0;
-        background:var(--bg);
-        color:var(--text);
-        font-family:
-                system-ui,
-                -apple-system,
-                BlinkMacSystemFont,
-                "Segoe UI",
-                Roboto,
-                Helvetica,
-                Arial,
-                sans-serif;
-        line-height:1.55;
-    }
-
-    a{ color:var(--link); text-decoration:none; }
-    a:hover{ text-decoration:underline; }
-
-    /* =====================================================
-       HEADER
-       ===================================================== */
-    .header{
-        position:fixed;
-        top:0;
-        left:0;
-        right:0;
-        background:var(--header-bg);
-        z-index:1000;
-    }
-
-    .header__inner{
-        max-width:1200px;
-        margin:0 auto;
-        display:grid;
-        grid-template-columns: 1fr auto;
-        grid-template-rows: auto auto;
-        align-items:center;
-        row-gap: 0;
-        padding: 8px 16px;
-    }
-
-    .brand{
-        font-weight:bold;
-        letter-spacing:.2px;
-        font-size:2rem;
-        grid-column: 1;
-        grid-row: 1;
-    }
-    .brand__link{ color:var(--text); }
-    .brand__link:hover{ text-decoration:none; }
-
-    /* Primary navigation (always on the second header row) */
-    .nav{
-        grid-column: 1 / -1;
-        grid-row: 2;
-        display:flex;
-        gap:12px;
-        flex-wrap:wrap;
-        justify-content:flex-start;
-        margin-top: 0;
-    }
-
-    .themeBtn{
-        background:transparent;
-        color:var(--text);
-        border:1px solid var(--text);
-        padding:8px 10px;
-        cursor:pointer;
-        border-radius:8px;
-        display:inline-flex;
-        flex-direction:column;
-        align-items:center;
-        gap:6px;
-        font: inherit;
-        justify-self:end;
-        line-height: 1.1;
-    }
-    .header__inner > .themeBtn{
-        grid-column: 2;
-        grid-row: 1 / -1;
-        align-self: center;
-    }
-    .themeBtn:hover{
-        background: var(--hover-bg-dark);
-    }
-    .themeIcon{
-        font-size: 1.05em;
-        line-height: 1;
-    }
-    .themeLabel{
-        font-size: .9rem;
-    }
-
-    /* =====================================================
-       PAGE LAYOUT
-       ===================================================== */
-    .layout{
-        max-width:1200px;
-        margin:0 auto;
-        display:grid;
-        grid-template-columns: var(--sidebarW) 1fr;
-        gap:var(--gap);
-        padding: var(--stickyTop) var(--gap) var(--gap);
-    }
-
-    /* =====================================================
-       SIDEBAR
-       ===================================================== */
-    .sidebar{
-        position:sticky;
-        top: var(--stickyTop);
-        height: calc(100vh - var(--stickyTop) - var(--gap));
-        background:var(--card);
-        border-radius:var(--radius);
-        overflow:auto;
-    }
-
-    .sidebar__inner{
-        padding:16px;
-        min-height:100%;
-        display:flex;
-        flex-direction:column;
-        gap:8px;
-        position: relative;
-    }
-
-    .sidebarPhoto{
-        width:100%;
-    }
-
-    .avatar{
-        width:100%;
-        height:auto;
-        display:block;
-        border-radius:var(--radius);
-    }
-
-    .sidebarInfo{
-        display:flex;
-        flex-direction:column;
-        gap:10px;
-        flex: 1;
-        min-height: 0;
-    }
-
-    .name{
-        margin:0;
-        font-size:1.4rem;
-        line-height:1.15;
-    }
-
-    .profileText{
-        margin-top:2px;
-    }
-    .profileText p{
-        margin:.15rem 0;
-    }
-    .role{
-        font-weight:600;
-        letter-spacing:.2px;
-    }
-    .affil{
-        font-size:.95rem;
-        color: var(--affil-dark);
-    }
-    [data-theme="light"] .affil{
-        color: var(--affil-light);
-    }
-
-    .muted{
-        color:var(--muted);
-        font-size:.95rem;
-    }
-
-    .links{
-        display:flex;
-        gap:10px;
-        flex-wrap:wrap;
-        margin-top:2px;
-    }
-    .links a{
-        display:inline-block;
-        padding:6px 10px;
-        border-radius:999px;
-        background: var(--pill-bg-dark);
-        color: var(--text);
-        font-size:.9rem;
-    }
-    [data-theme="light"] .links a{
-        background: var(--pill-bg-light);
-        color: var(--text);
-    }
-    .links a:hover{
-        text-decoration:none;
-        filter: brightness(1.08);
-    }
-
-    .tagline{
-        margin: 0;
-        margin-top: auto;
-        font-style: italic;
-    }
-
-    /* =====================================================
-       MAIN CONTENT WRAPPER
-       ===================================================== */
-    .content{
-        min-width:0;
-        display:flex;
-        flex-direction:column;
-        gap:var(--gap);
-    }
-
-    /* =====================================================
-       CARDS + COMPONENTS
-       ===================================================== */
-    .card{
-        background:var(--card);
-        border:0;
-        border-radius:var(--radius);
-        padding:16px;
-    }
-
-    .section h2,
-    .sectionSummary{
-        margin:0 0 10px;
-        font-size:1.5rem;
-        font-weight:700;
-        line-height:1.2;
-    }
-
-    /* Collapsible sections (open by default) */
-    .sectionSummary{
-        cursor:pointer;
-        user-select:none;
-    }
-    .sectionSummary::-webkit-details-marker{ display:none; }
-    .sectionSummary:focus-visible{
-        outline:2px solid var(--link);
-        outline-offset:4px;
-        border-radius:6px;
-    }
-    .sectionBody{ margin-top:10px; }
-
-    details.sectionToggle[open] .sectionBody{
-        animation: sectionOpen .14s ease-out;
-        transform-origin: top;
-    }
-
-    @keyframes sectionOpen{
-        from{ opacity:0; transform: translateY(-4px); }
-        to{ opacity:1; transform: translateY(0); }
-    }
-
-    .list{
-        margin:0;
-        padding-left:0;
-        list-style:none;
-    }
-    .list li{
-        margin:12px 0;
-    }
-    .confNote{
-        margin-top:10px;
-        margin-bottom: 0;
-        font-size:.9rem;
-    }
-    .confTitle{
-        margin:0;
-    }
-    .confMeta{
-        margin:0;
-    }
-    .confCite{
-        margin-top:2px;
-    }
-
-    /* Divider between conference entries */
-    #conferences .list li + li{
-        border-top: 2px solid var(--pill-bg-dark);
-        padding-top: 12px;
-    }
-    [data-theme="light"] #conferences .list li + li{
-        border-top-color: var(--pill-bg-light);
-    }
-
-    .journal{
-        font-style: italic;
-    }
-    .me{
-        text-decoration: underline;
-        text-underline-offset: 2px;
-        text-decoration-thickness: 1px;
-    }
-    .subDivider{
-        border:0;
-        border-top: 2px solid var(--pill-bg-dark);
-        margin: 14px 0;
-    }
-    [data-theme="light"] .subDivider{
-        border-top-color: var(--pill-bg-light);
-    }
-    .eduMeta{
-        margin:0;
-    }
-    .eduItem{
-        margin:0;
-    }
-    .eduItem + .eduItem{
-        margin-top:12px;
-    }
-
-
-    .photoBox{
-        margin: 8px 0 0;
-    }
-    .photoBox img{
-        width:100%;
-        height:auto;
-        display:block;
-        border-radius: var(--radius);
-    }
-    .photoBox figcaption{
-        margin-top: 8px;
-        font-size:.9rem;
-    }
-
-    /* =====================================================
-       GRIDS
-       ===================================================== */
-    .grid2{
-        display:grid;
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap:var(--gap);
-    }
-
-    /* Teaching: grouped by level within year */
-    .teachList{
-        list-style:none;
-        padding:0;
-        margin:0;
-        display:flex;
-        flex-direction:column;
-        gap:12px;
-    }
-
-    .teachYear{
-        display:grid;
-        grid-template-columns: 110px 1fr;
-        column-gap: 14px;
-        align-items:start;
-    }
-
-    /* Divider between teaching years */
-    .teachYear + .teachYear{
-        border-top: 2px solid var(--pill-bg-dark);
-        padding-top: 12px;
-    }
-    [data-theme="light"] .teachYear + .teachYear{
-        border-top-color: var(--pill-bg-light);
-    }
-
-    .teachWhen{
-        font-size: .9rem;
-        text-transform: uppercase;
-        letter-spacing: .6px;
-        color: var(--muted);
-        padding-top: 2px;
-        display:flex;
-        flex-direction:column;
-        align-items:center;
-        line-height: 1.05;
-        gap:2px;
-    }
-    .teachDash{
-        line-height: 1;
-    }
-
-    .teachWhat{
-        display:flex;
-        flex-direction:column;
-        gap:0;
-    }
-
-    .teachLevel{
-        margin-top: 10px;
-        font-weight: 700;
-        letter-spacing: .2px;
-    }
-    .teachLevel:first-child{
-        margin-top: 0;
-    }
-
-    .teachItem{
-        font-size: .95rem;
-        line-height: 1.35;
-        margin: 0;
-        padding: 0;
-    }
-
-    .teachType{
-        color: var(--muted);
-        font-size: .9rem;
-        margin-left: 6px;
-        white-space: nowrap;
-    }
-
-    /* =====================================================
-       FOOTER
-       ===================================================== */
-    .footerGrid{
-        display:grid;
-        grid-template-columns: 1fr;
-        row-gap: var(--gap);
-    }
-    .toTop{
-        display:inline-block;
-        border-radius:999px;
-        padding: 6px 10px;
-        background: var(--pill-bg-dark);
-        color: var(--text);
-        font-size:.9rem;
-    }
-    [data-theme="light"] .toTop{
-        background: var(--pill-bg-light);
-        color: var(--text);
-    }
-    .toTop:hover{
-        text-decoration:none;
-        filter: brightness(1.08);
-    }
-    .footerTopRow{
-        display:flex;
-        align-items:baseline;
-        justify-content: space-around;
-        gap:12px;
-        margin:0;
-    }
-    .footerQuoteInline{
-        margin:0;
-        flex:1;
-        min-width:0;
-        font-style: italic;
-        line-height:1.45;
-        max-width: 72ch;
-        padding: 0 1vw;
-    }
-    .footerMetaRow{
-        display:flex;
-        flex-direction:column;
-        align-items:center;
-        justify-content:center;
-        gap:0;
-        flex-wrap:nowrap;
-        font-size:.9rem;
-        line-height: 1.5;
-        text-align:center;
-        margin-top: 1.5em;
-    }
-    .footerLegal {
-        display:block;
-        margin:0;
-        padding:0;
-    }
-    .section, .footer{
-        scroll-margin-top: calc(var(--headerH) + 14px);
-    }
-
-    /* =====================================================
-       RESPONSIVE
-       ===================================================== */
-    @media (max-width: 980px){
-        .teachYear{ grid-template-columns: 90px 1fr; }
-        .layout{ grid-template-columns:1fr; }
-
-        .sidebar{
-            position:relative;
-            top:auto;
-            height:auto;
+            --header-bg: var(--card);
+            --hover-bg: rgba(0,0,0,.15);
         }
 
-        .grid2{ grid-template-columns:1fr; }
+        /* =====================================================
+           SYSTEM PREFERENCE FALLBACK
+           ===================================================== */
+        @media (prefers-color-scheme: light){
+            :root:not([data-theme]){
+                --bg:#eee;
+                --card:#fff;
+                --text:#111;
+                --muted:#555;
+                --link:#0047cc;
+            }
+        }
 
-        .brand{ font-size: 1.6rem; }
+        /* =====================================================
+           BASE RESET + TYPOGRAPHY
+           ===================================================== */
+        *{ box-sizing:border-box; }
+        html,body{ height:100%; }
+
+        body{
+            margin:0;
+            background:var(--bg);
+            color:var(--text);
+            font-family:
+                    system-ui,
+                    -apple-system,
+                    BlinkMacSystemFont,
+                    "Segoe UI",
+                    Roboto,
+                    Helvetica,
+                    Arial,
+                    sans-serif;
+            line-height:1.55;
+        }
+
+        a{ color:var(--link); text-decoration:none; }
+        a:hover{ text-decoration:underline; }
+
+        /* =====================================================
+           HEADER
+           ===================================================== */
+        .header{
+            position:fixed;
+            top:0;
+            left:0;
+            right:0;
+            background:var(--header-bg);
+            z-index:1000;
+        }
+
+        .header__inner{
+            max-width:1200px;
+            margin:0 auto;
+            display:grid;
+            grid-template-columns: 1fr auto;
+            grid-template-rows: auto auto;
+            align-items:center;
+            row-gap: 0;
+            padding: 8px 16px;
+        }
+
+        #headerSpliter {
+            background-color: var(--bg);
+            height: calc(var(--gap)/2);
+        }
+
+        .brand{
+            font-weight:bold;
+            letter-spacing:.2px;
+            font-size:2rem;
+            grid-column: 1;
+            grid-row: 1;
+        }
+        .brand__link{ color:var(--text); }
+        .brand__link:hover{ text-decoration:none; }
+
+        /* Primary navigation (always on the second header row) */
         .nav{
-            flex-wrap: nowrap;
-            overflow-x: auto;
-            -webkit-overflow-scrolling: touch;
-            gap: 10px;
-            padding-bottom: 2px;
+            grid-column: 1 / -1;
+            grid-row: 2;
+            display:flex;
+            gap:12px;
+            flex-wrap:wrap;
+            justify-content:flex-start;
+            margin-top: 0;
+            margin-left: -6px;
         }
-        .nav a{ white-space: nowrap; }
 
+        .nav a{
+            padding: 2px 6px;
+        }
+
+        .themeBtn{
+            background:transparent;
+            color:var(--text);
+            border:1px solid var(--text);
+            padding:8px 10px;
+            cursor:pointer;
+            border-radius:8px;
+            display:inline-flex;
+            flex-direction:column;
+            align-items:center;
+            gap:6px;
+            font: inherit;
+            justify-self:end;
+            line-height: 1.1;
+        }
+        .header__inner > .themeBtn{
+            grid-column: 2;
+            grid-row: 1 / -1;
+            align-self: center;
+        }
+        .themeBtn:hover{
+            background: var(--hover-bg);
+        }
+        .themeIcon{
+            font-size: 1.05em;
+            line-height: 1;
+        }
+        .themeLabel{
+            font-size: .9rem;
+        }
+
+        /* =====================================================
+           PAGE LAYOUT
+           ===================================================== */
+        .layout{
+            max-width:1200px;
+            margin:0 auto;
+            display:grid;
+            grid-template-columns: var(--sidebarW) 1fr;
+            gap:var(--gap);
+            padding: var(--stickyTop) var(--gap) var(--gap);
+        }
+
+        /* =====================================================
+           SIDEBAR
+           ===================================================== */
+        .sidebar{
+            position:sticky;
+            top: var(--stickyTop);
+            height: calc(100vh - var(--stickyTop) - var(--gap));
+            background:var(--card);
+            border-radius:var(--radius);
+            overflow:auto;
+        }
 
         .sidebar__inner{
-            display:grid;
-            grid-template-columns: 160px 1fr;
-            column-gap: 16px;
-            align-items:stretch;
+            padding:16px;
+            min-height:100%;
+            display:flex;
+            flex-direction:column;
+            gap:8px;
+            position: relative;
         }
 
         .sidebarPhoto{
-            grid-column: 1;
-            height:100%;
+            width:100%;
         }
 
         .avatar{
             width:100%;
-            height:100%;
-            object-fit:cover;
-            margin:0;
+            height:auto;
+            display:block;
+            border-radius:var(--radius);
         }
 
         .sidebarInfo{
-            grid-column: 2;
             display:flex;
             flex-direction:column;
             gap:10px;
-            min-height:0;
-            padding-left: clamp(8px, 3vw, 20px);
+            flex: 1;
+            min-height: 0;
         }
 
-        .grid2 .photoBox{
-            display:grid;
-            grid-template-columns: 1fr 1fr;
-            column-gap: 12px;
-            align-items:start;
+        .name{
+            margin:0;
+            font-size:1.4rem;
+            line-height:1.15;
         }
 
-        .grid2 .photoBox img{
+        .profileText{
+            margin-top:2px;
+        }
+        .profileText p{
+            margin:.15rem 0;
+        }
+        .role{
+            font-weight:600;
+            letter-spacing:.2px;
+            margin: .3rem 0 1em 0 !important
+        }
+        .roleSub{
+            display:block;
+            font-size:.9rem;
+            letter-spacing:0;
+        }
+        .affil{
+            font-size:.95rem;
+            color: var(--affil-dark);
+        }
+        [data-theme="light"] .affil{
+            color: var(--affil-light);
+        }
+
+        .sidebarHalmos {
+            margin-top: auto;
+        }
+
+        .muted{
+            color:var(--muted);
+            font-size:.95rem;
+        }
+
+        .links{
+            display:flex;
+            gap:10px;
+            flex-wrap:wrap;
+            margin-top:20px;
+            justify-content: center;
+        }
+        .links a{
+            display:inline-block;
+            padding:6px 12px;
+            border-radius:999px;
+            background: var(--pill-bg-dark);
+            color: var(--text);
+            font-size:.9rem;
+            margin: 0 2px;
+        }
+        [data-theme="light"] .links a{
+            background: var(--pill-bg-light);
+            color: var(--text);
+        }
+        .links a:hover{
+            text-decoration:none;
+            filter: brightness(1.08);
+        }
+
+        .tagline{
+            margin: auto 0 0;
+        }
+        .tagline p {
+            margin-bottom: .3em;
+            line-height: 1.3;
+        }
+
+        /* =====================================================
+           MAIN CONTENT WRAPPER
+           ===================================================== */
+        .content{
+            min-width:0;
+            display:flex;
+            flex-direction:column;
+            gap:var(--gap);
+        }
+
+        /* =====================================================
+           CARDS + COMPONENTS
+           ===================================================== */
+        .card{
+            background:var(--card);
+            border:0;
+            border-radius:var(--radius);
+            padding:16px;
+        }
+
+        .section h2,
+        .sectionSummary{
+            margin:0 0 10px;
+            font-size:1.5rem;
+            font-weight:700;
+            line-height:1.2;
+        }
+
+        /* Collapsible sections (open by default) */
+        .sectionSummary{
+            cursor:pointer;
+            user-select:none;
+        }
+        .sectionSummary::-webkit-details-marker{ display:none; }
+        .sectionSummary:focus-visible{
+            outline:2px solid var(--link);
+            outline-offset:4px;
+            border-radius:6px;
+        }
+        .sectionBody{ margin: 10px 0; }
+
+        details.sectionToggle[open] .sectionBody{
+            animation: sectionOpen .14s ease-out;
+            transform-origin: top;
+        }
+
+        @keyframes sectionOpen{
+            from{ opacity:0; transform: translateY(-4px); }
+            to{ opacity:1; transform: translateY(0); }
+        }
+
+        .list{
+            margin:0;
+            padding-left:0;
+            list-style:none;
+        }
+        .list li{
+            margin:12px 0;
+        }
+        .confNote{
+            margin-top:10px;
+            margin-bottom: 0;
+            font-size:.9rem;
+        }
+        .confTitle{
+            margin:0;
+        }
+        .confMeta{
+            margin:0;
+        }
+        .confCite{
+            margin-top:2px;
+        }
+
+        /* Divider between conference entries */
+        #conferences .list li + li{
+            border-top: 2px solid var(--pill-bg-dark);
+            padding-top: 12px;
+        }
+        [data-theme="light"] #conferences .list li + li{
+            border-top-color: var(--pill-bg-light);
+        }
+
+        .journal{
+            font-style: italic;
+        }
+        .me{
+            text-decoration: underline;
+            text-underline-offset: 2px;
+            text-decoration-thickness: 1px;
+        }
+        .subDivider{
+            border:0;
+            border-top: 2px solid var(--pill-bg-dark);
+            margin: 14px 0;
+        }
+        [data-theme="light"] .subDivider{
+            border-top-color: var(--pill-bg-light);
+        }
+        .eduMeta{
+            margin:0;
+        }
+        .eduItem{
+            margin:0;
+        }
+        .eduItem + .eduItem{
+            margin-top:12px;
+        }
+
+
+        .photoBox{
+            margin: 8px 0;
+        }
+        .photoBox img{
             width:100%;
             height:auto;
-        }
-
-        .grid2 .photoBox figcaption{
-            margin-top: 0;
-        }
-
-    }
-    @media (max-width: 480px){
-        .teachYear{
-            grid-template-columns: 1fr;
-            row-gap: 6px;
-        }
-        .teachWhen{
-            text-align:center;
-        }
-        .teachWhen span {
-            display: none;
-        }
-        .teachWhen::before{
-            content: attr(data-range);
             display:block;
+            border-radius: var(--radius);
+        }
+        .photoBox figcaption{
+            margin-top: 8px;
+            font-size:.9rem;
         }
 
-        .sidebar__inner{
+        /* =====================================================
+           GRIDS
+           ===================================================== */
+        .grid2{
+            display:grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap:var(--gap);
+        }
+
+        /* Teaching: grouped by level within year */
+        .teachList{
+            list-style:none;
+            padding:0;
+            margin:0;
             display:flex;
             flex-direction:column;
             gap:12px;
         }
-        .sidebarPhoto{
-            display: none;
+
+        .teachYear{
+            display:grid;
+            grid-template-columns: 110px 1fr;
+            column-gap: 14px;
+            align-items:start;
         }
 
-        .header__inner > .themeBtn{
+        /* Divider between teaching years */
+        .teachYear + .teachYear{
+            border-top: 2px solid var(--pill-bg-dark);
+            padding-top: 12px;
+        }
+        [data-theme="light"] .teachYear + .teachYear{
+            border-top-color: var(--pill-bg-light);
+        }
+
+        .teachWhen{
+            font-size: .9rem;
+            text-transform: uppercase;
+            letter-spacing: .6px;
+            color: var(--muted);
+            padding-top: 2px;
+            display:flex;
+            flex-direction:column;
+            align-items:center;
+            line-height: 1.05;
+            gap:2px;
+        }
+        .teachDash{
+            line-height: 1;
+        }
+
+        .teachWhat{
+            display:flex;
+            flex-direction:column;
+            gap:0;
+        }
+
+        .teachLevel{
+            margin-top: 10px;
+            font-weight: 700;
+            letter-spacing: .2px;
+        }
+        .teachLevel:first-child{
+            margin-top: 0;
+        }
+
+        .teachItem{
+            font-size: .95rem;
+            line-height: 1.35;
+            margin: 0;
+            padding: 0;
+        }
+
+        .teachType{
+            color: var(--muted);
+            font-size: .9rem;
+            margin-left: 6px;
+            white-space: nowrap;
+        }
+
+        /* =====================================================
+           FOOTER
+           ===================================================== */
+        .footerGrid{
+            display:grid;
+            grid-template-columns: 1fr;
+            row-gap: var(--gap);
+        }
+        .toTop{
+            display:inline-block;
+            border-radius:999px;
+            padding: 6px 10px;
+            background: var(--pill-bg-dark);
+            color: var(--text);
+            font-size:.9rem;
+        }
+        [data-theme="light"] .toTop{
+            background: var(--pill-bg-light);
+            color: var(--text);
+        }
+        .toTop:hover{
+            text-decoration:none;
+            filter: brightness(1.08);
+        }
+        .footerTopRow{
+            display:flex;
+            align-items: flex-start;
+            justify-content: space-around;
+            gap:12px;
+            margin:0;
+        }
+        .footerQuoteInline{
+            margin:0;
+            flex:1;
+            min-width:0;
+            line-height:1.45;
+            max-width: 72ch;
+            padding: 0 1vw;
+        }
+        .footerQuoteInline q {
+            display: inline-block;
+            padding-left: .5em;
+            text-indent: -.5em;
+        }
+        .footerQuoteInline q span {
+            white-space: nowrap;
+        }
+        .footerMetaRow{
+            display:flex;
+            flex-direction:column;
+            align-items:center;
+            justify-content:center;
+            gap:0;
+            flex-wrap:nowrap;
+            font-size:.9rem;
+            line-height: 1.5;
+            text-align:center;
+            margin-top: 1.5em;
+        }
+        .footerLegal {
             display:block;
-            align-self:flex-start;
+            margin:0;
+            padding:0;
+        }
+        .section, .footer{
+            scroll-margin-top: calc(var(--headerH) + 14px);
         }
 
-        .nav{
-            gap: 10px;
-            flex-wrap:wrap;
-        }
-        .sidebarInfo{ padding-left: 0; }
+        /* =====================================================
+           RESPONSIVE
+           ===================================================== */
+        @media (max-width: 980px){
+            .teachYear{ grid-template-columns: 90px 1fr; }
+            .layout{ grid-template-columns:1fr; }
 
-        .grid2 .photoBox{
-            display:block;
-        }
+            .sidebar{
+                position:relative;
+                top:auto;
+                height:auto;
+            }
 
-        .grid2 .photoBox figcaption{
-            margin-top:8px;
+            .grid2{ grid-template-columns:1fr; }
+
+            .brand{ font-size: 1.6rem; }
+            .nav{
+                flex-wrap: nowrap;
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+                gap: 10px;
+                padding-bottom: 2px;
+            }
+            .nav a{
+                white-space: nowrap;
+            }
+
+            .links {
+                margin: 2px;
+            }
+
+            .role {
+                margin: .15rem 0 .6em 0 !important;
+            }
+
+            .sidebar__inner{
+                display:grid;
+                grid-template-columns: 160px 1fr;
+                column-gap: 16px;
+                align-items:stretch;
+            }
+
+            .sidebarPhoto{
+                grid-column: 1;
+                height:100%;
+            }
+
+            .avatar{
+                width:100%;
+                height:100%;
+                object-fit:cover;
+                margin:0;
+            }
+
+            .sidebarInfo{
+                grid-column: 2;
+                display:flex;
+                flex-direction:column;
+                gap:10px;
+                min-height:0;
+                padding-left: clamp(8px, 3vw, 20px);
+            }
+
+            .sidebarHalmos {
+                display: none;
+            }
+
+            .grid2 .photoBox{
+                display:grid;
+                grid-template-columns: 1fr 1fr;
+                column-gap: 12px;
+                align-items:start;
+            }
+
+            .grid2 .photoBox img{
+                width:100%;
+                height:auto;
+            }
+
+            .grid2 .photoBox figcaption{
+                margin-top: 0;
+            }
+
         }
-    }
-  </style>
+        @media (max-width: 480px){
+            .teachYear{
+                grid-template-columns: 1fr;
+                row-gap: 6px;
+            }
+            .teachWhen{
+                text-align:center;
+            }
+            .teachWhen span {
+                display: none;
+            }
+            .teachWhen::before{
+                content: attr(data-range);
+                display:block;
+            }
+
+            .sidebar__inner{
+                display:flex;
+                flex-direction:column;
+                gap:12px;
+            }
+            .sidebarPhoto{
+                display: none;
+            }
+
+            .header__inner > .themeBtn{
+                display:block;
+                align-self:flex-start;
+            }
+
+            .nav{
+                gap: 10px;
+                flex-wrap:wrap;
+            }
+            .sidebarInfo{ padding-left: 0; }
+
+            .grid2 .photoBox{
+                display:block;
+            }
+
+            .grid2 .photoBox figcaption{
+                margin-top:8px;
+            }
+        }
+    </style>
 </head>
 <body>
-  <!-- ================= HEADER ================= -->
-  <header class="header">
+<!-- ================= HEADER ================= -->
+<header class="header">
     <div class="header__inner">
-      <div class="brand">
-        <a class="brand__link" href="#top">Edouard DENDAUW</a>
-      </div>
-      <nav class="nav" aria-label="Sections">
-        <a href="#papers">Papers</a>
-        <a href="#conferences">Conferences</a>
-        <a href="#teaching">Teaching</a>
-        <a href="#education">Education</a>
-      </nav>
+        <div class="brand">
+            <a class="brand__link" href="#top">Edouard DENDAUW</a>
+        </div>
+        <nav class="nav" aria-label="Sections">
+            <a href="#papers">Papers</a>
+            <a href="#conferences">Conferences</a>
+            <a href="#teaching">Teaching</a>
+            <a href="#education">Education</a>
+        </nav>
 
-      <button id="themeToggle" class="themeBtn" type="button" aria-label="Toggle theme">
-        <span class="themeLabel">Dark</span>
-        <span class="themeIcon" aria-hidden="true">☾</span>
-      </button>
+        <button id="themeToggle" class="themeBtn" type="button" aria-label="Toggle theme">
+            <span class="themeLabel">Dark</span>
+            <span class="themeIcon" aria-hidden="true">☾</span>
+        </button>
     </div>
-  </header>
+    <div id="headerSpliter"></div>
+</header>
 
-  <!-- ================= MAIN LAYOUT ================= -->
-  <div class="layout" id="top">
+<!-- ================= MAIN LAYOUT ================= -->
+<div class="layout" id="top">
     <!-- ================= SIDEBAR ================= -->
     <aside class="sidebar">
-      <div class="sidebar__inner">
-        <div class="sidebarPhoto">
-          <img id="avatar" class="avatar" src="assets/perso1.png" alt="Your photo" />
+        <div class="sidebar__inner">
+            <div class="sidebarPhoto">
+                <img id="avatar" class="avatar" src="assets/perso1.png" alt="Your photo" />
+            </div>
+
+            <div class="sidebarInfo">
+                <h1 class="name">Edouard Dendauw, PhD</h1>
+
+                <div class="profileText">
+                    <p class="role">
+                        Post-doctoral Research Fellow
+                        <span class="roleSub">in Computational Neuroscience</span>
+                    </p>
+                    <p class="affil">School of Electrical and Electronic Engineering</p>
+                    <p class="affil">University College Dublin &nbsp;<span role="img" aria-label="Irish flag">&#x1F1EE;&#x1F1EA;</span></p>
+                    <p class="muted">
+                        <a href="mailto:edouard.dendauw@ucd.ie">edouard.dendauw@ucd.ie</a><br>
+                        <a href="mailto:edouard.dendauw@gmail.com">edouard.dendauw@gmail.com</a>
+                    </p>
+                </div>
+
+                <div class="links">
+                    <a href="https://scholar.google.com/citations?user=-fFeBGEAAAAJ&hl=en">Scholar</a>
+                    <a href="https://orcid.org/0000-0001-9565-3191">ORCID</a>
+                    <a href="https://www.linkedin.com/in/edouard-dendauw-aba451194/">LinkedIn</a>
+                    <a href="https://osf.io/user/br73u">OSF</a>
+                    <a href="https://github.com/edouard-dendauw">GitHub</a>
+                </div>
+            </div>
+            <div class="sidebarHalmos">
+                <span title="halmos">&#x220E;</span>
+            </div>
         </div>
-
-        <div class="sidebarInfo">
-          <h1 class="name">Edouard Dendauw</h1>
-
-          <div class="profileText">
-            <p class="role">Post-doctoral Research Fellow</p>
-            <p class="affil">School of Electrical and Electronic Engineering</p>
-            <p class="affil">University College Dublin</p>
-            <p class="muted">
-              <a href="mailto:edouard.dendauw@ucd.ie">edouard.dendauw@ucd.ie</a><br>
-              <a href="mailto:edouard.dendauw@gmail.com">edouard.dendauw@gmail.com</a>
-            </p>
-          </div>
-
-          <div class="links">
-            <a href="https://scholar.google.com/citations?user=-fFeBGEAAAAJ&hl=en">Scholar</a>
-            <a href="https://orcid.org/0000-0001-9565-3191">ORCID</a>
-            <a href="https://osf.io/user/br73u">OSF</a>
-            <a href="https://github.com/edouard-dendauw">GitHub</a>
-          </div>
-          <p class="tagline muted">Computational neuroscience researcher. Coder.</p>
-        </div>
-      </div>
     </aside>
 
     <!-- ================= MAIN CONTENT ================= -->
     <main class="content">
-      <!-- ===== TOP GRID: HIGHLIGHT BOXES ===== -->
-      <section class="grid2" aria-label="Top boxes">
-        <article class="card section">
-          <h2>Latest update</h2>
-          <p class="muted">
-            On 12 December 2025, I defended my PhD thesis at the MSHE Ledoux in Besançon.
-            Huge thanks to my supervisors, collaborators, and the jury.
-            PhD unlocked. Debugging continues. More coffee required.
-          </p>
-        </article>
+        <!-- ===== TOP GRID: HIGHLIGHT BOXES ===== -->
+        <section class="grid2" aria-label="Top boxes">
+            <article class="card section">
+                <h2>Latest update</h2>
+                <p>On 12 December 2025, I defended my PhD thesis at the MSHE Ledoux in Besançon.
+                    I am sincerely grateful to my supervisors, collaborators, and jury members for their guidance and support throughout this work.
+                    The milestone has been reached, yet the research (and coffee consumption) continues.
+                </p>
+                <p>[FR] Une actualité consacrée à ma thèse, soutenue à la <a href="https://mshe.univ-fcomte.fr/">MSHE Claude Nicolas Ledoux</a> (UAR 3124 CNRS/UMLP), est disponible en ligne.
+                    Vous pouvez la consulter
+                    <a href="https://mshe.univ-fcomte.fr/actualite/recherche/de-la-decision-a-l-action-l-experimentation-au-service-de-la-modelisation">[ ici ]</a>
+                    .</p>
+            </article>
 
-        <article class="card section">
-          <h2>Latest photograph</h2>
-          <figure class="photoBox">
-            <img src="assets/latest.png" alt="Latest photograph by Edouard Dendauw">
-            <figcaption class="muted">PhD thesis defense oral, MSHE Ledoux, Besançon, France. 12 December 2025.</figcaption>
-          </figure>
-        </article>
-      </section>
+            <article class="card section">
+                <h2>Latest photograph</h2>
+                <figure class="photoBox">
+                    <img src="assets/latest.png" alt="Latest photograph by Edouard Dendauw">
+                    <figcaption class="muted">PhD thesis defense oral, MSHE Ledoux, Besançon, France. 12 December 2025.</figcaption>
+                </figure>
+            </article>
+        </section>
 
-      <!-- ===== PAPERS ===== -->
-      <section class="card section" id="papers">
-        <h2>Papers (1)</h2>
-        <ul class="list">
-          <li>
-            <span class="me">Dendauw, E.</span>, Evans, N. J., Logan, G. D., Haffen, E., Bennabi, D., Gajdos, T., &amp; Servant, M. (2024).
-            The gated cascade diffusion model: An integrated theory of decision making, motor preparation, and motor execution.
-            <span class="journal">Psychological Review.</span>
-            <a href="https://doi.org/10.1037/rev0000464">https://doi.org/10.1037/rev0000464</a><br>
-            <span class="muted">Open materials:</span>
-            <a href="https://osf.io/4unw6/">https://osf.io/4unw6/</a>
-          </li>
-        </ul>
-      </section>
+        <!-- ===== PAPERS ===== -->
+        <section class="card section" id="papers">
+            <h2>Papers (1)</h2>
+            <ul class="list">
+                <li>
+                    <span class="me">Dendauw, E.</span>, Evans, N. J., Logan, G. D., Haffen, E., Bennabi, D., Gajdos, T., &amp; Servant, M. (2024).
+                    The gated cascade diffusion model: An integrated theory of decision making, motor preparation, and motor execution.
+                    <span class="journal">Psychological Review.</span>
+                    <a href="https://doi.org/10.1037/rev0000464">https://doi.org/10.1037/rev0000464</a><br>
+                    <span class="muted">Open materials:</span>
+                    <a href="https://osf.io/4unw6/">https://osf.io/4unw6/</a>
+                </li>
+            </ul>
+        </section>
 
-      <!-- ===== CONFERENCES ===== -->
-      <details class="card section sectionToggle" id="conferences" open>
-        <summary class="sectionSummary">Conferences (4)</summary>
-        <div class="sectionBody">
-          <ul class="list">
-            <li>
-              <div class="confTitle">
-                <strong>1st Annual Meeting of the <a href="https://sites.google.com/view/collectif-cognitif">Collectif Cognitif</a></strong>
-              </div>
-              <div class="muted confMeta">Paris, France &middot; 2024 &middot; Poster</div>
-              <div class="confCite">
-                <span class="me">E. Dendauw</span>, N. J. Evans, T. Gajdos, &amp; M. Servant.
-                Deciding with Muscles: an Empirical Test of the Gated Cascade Diffusion Model.
-              </div>
-            </li>
+        <!-- ===== CONFERENCES ===== -->
+        <details class="card section sectionToggle" id="conferences" open>
+            <summary class="sectionSummary">Conferences (4)</summary>
+            <div class="sectionBody">
+                <ul class="list">
+                    <li>
+                        <div class="confTitle">
+                            <strong>1st Annual Meeting of the <a href="https://sites.google.com/view/collectif-cognitif">Collectif Cognitif</a></strong>
+                        </div>
+                        <div class="muted confMeta">Paris, France &middot; 2024 &middot; Poster</div>
+                        <div class="confCite">
+                            <span class="me">E. Dendauw</span>, N. J. Evans, T. Gajdos, &amp; M. Servant.
+                            Deciding with Muscles: an Empirical Test of the Gated Cascade Diffusion Model.
+                        </div>
+                    </li>
 
-            <li>
-              <div class="confTitle">
-                <strong>64th Annual Meeting of the <a href="https://www.psychonomic.org/page/meetings">Psychonomic Society</a></strong>
-              </div>
-              <div class="muted confMeta">San Francisco, United States &middot; 2023 &middot; Poster</div>
-              <div class="confCite">
-                <span class="me">E. Dendauw</span>, G. D. Logan, N. J. Evans, T. Gajdos, &amp; M. Servant.
-                An empirical test of the dual-stage dual-threshold evidence accumulation theory for decision making, motor preparation, and motor execution.
-              </div>
-            </li>
-            <li>
-              <div class="confTitle">
-                <strong>23rd <a href="https://www.escop.eu/">ESCoP</a> Conference</strong>
-              </div>
-              <div class="muted confMeta">Porto, Portugal &middot; 2023 &middot; Poster</div>
-              <div class="confCite">
-                <span class="me">E. Dendauw</span>, T. Gajdos, &amp; M. Servant.
-                Decomposing Decision and Motor Processes Driving Response Bias.
-              </div>
-            </li>
+                    <li>
+                        <div class="confTitle">
+                            <strong>64th Annual Meeting of the <a href="https://www.psychonomic.org/page/meetings">Psychonomic Society</a></strong>
+                        </div>
+                        <div class="muted confMeta">San Francisco, United States &middot; 2023 &middot; Poster</div>
+                        <div class="confCite">
+                            <span class="me">E. Dendauw</span>, G. D. Logan, N. J. Evans, T. Gajdos, &amp; M. Servant.
+                            An empirical test of the dual-stage dual-threshold evidence accumulation theory for decision making, motor preparation, and motor execution.
+                        </div>
+                    </li>
+                    <li>
+                        <div class="confTitle">
+                            <strong>23rd <a href="https://www.escop.eu/">ESCoP</a> Conference</strong>
+                        </div>
+                        <div class="muted confMeta">Porto, Portugal &middot; 2023 &middot; Poster</div>
+                        <div class="confCite">
+                            <span class="me">E. Dendauw</span>, T. Gajdos, &amp; M. Servant.
+                            Decomposing Decision and Motor Processes Driving Response Bias.
+                        </div>
+                    </li>
 
-            <li>
-              <div class="confTitle">
-                <strong>22nd <a href="https://www.escop.eu/">ESCoP</a> Conference</strong>
-              </div>
-              <div class="muted confMeta">Lille, France &middot; 2022 &middot; Poster</div>
-              <div class="confCite">
-                <span class="me">E. Dendauw</span>, N. J. Evans, G. D. Gordon, T. Gajdos, &amp; M. Servant.
-                A dual-stage dual-threshold evidence accumulation theory for decision making, motor preparation, and motor execution.
-              </div>
-            </li>
-          </ul>
-          <p class="muted confNote">* <a href="https://www.escop.eu/">ESCoP</a> = European Society for Cognitive Psychology.</p>
-        </div>
-      </details>
-
-      <!-- ===== TEACHING ===== -->
-      <details class="card section sectionToggle" id="teaching" open>
-        <summary class="sectionSummary">Teaching (348 h)</summary>
-        <div class="sectionBody">
-          <p class="muted">Department of Psychology, Université Marie et Louis Pasteur, France.</p>
-
-          <ul class="teachList">
-            <li class="teachYear">
-              <div class="teachWhen" data-range="2024–2025"><span>2025</span><span class="teachDash">-</span><span>2024</span></div>
-              <div class="teachWhat">
-                <div class="teachLevel">Master 1</div>
-                <div class="teachItem">Méthodes et outils <span class="teachType">(Tutorials &middot; 12 h)</span></div>
-
-                <div class="teachLevel">Bachelor 3</div>
-                <div class="teachItem">Évaluation et outils diagnostics <span class="teachType">(Lecture &middot; 8 h)</span></div>
-                <div class="teachItem">Méthodologie et statistiques inférentielles <span class="teachType">(Tutorials &middot; 48 h)</span></div>
-                <div class="teachItem">Neurosciences intégratives <span class="teachType">(Lab &middot; 36 h)</span></div>
-
-                <div class="teachLevel">Bachelor 2</div>
-                <div class="teachItem">Statistiques inférentielles <span class="teachType">(Tutorials &middot; 36 h)</span></div>
-
-                <div class="teachLevel">Bachelor 1</div>
-                <div class="teachItem">Introduction à la psychologie cognitive et neuropsychologie <span class="teachType">(Tutorials &middot; 36 h)</span></div>
-              </div>
-            </li>
-
-            <li class="teachYear">
-              <div class="teachWhen" data-range="2023–2024"><span>2024</span><span class="teachDash">-</span><span>2023</span></div>
-              <div class="teachWhat">
-                <div class="teachLevel">Bachelor 3</div>
-                <div class="teachItem">Méthodologie et statistiques inférentielles <span class="teachType">(Tutorials &middot; 24 h)</span></div>
-                <div class="teachItem">Neurosciences intégratives <span class="teachType">(Lab &middot; 36 h)</span></div>
-              </div>
-            </li>
-
-            <li class="teachYear">
-              <div class="teachWhen" data-range="2022–2023"><span>2023</span><span class="teachDash">-</span><span>2022</span></div>
-              <div class="teachWhat">
-                <div class="teachLevel">Bachelor 3</div>
-                <div class="teachItem">Méthodologie et statistiques inférentielles <span class="teachType">(Tutorials &middot; 24 h)</span></div>
-                <div class="teachItem">Neurosciences intégratives <span class="teachType">(Lab &middot; 36 h)</span></div>
-              </div>
-            </li>
-
-            <li class="teachYear">
-              <div class="teachWhen" data-range="2021–2022"><span>2022</span><span class="teachDash">-</span><span>2021</span></div>
-              <div class="teachWhat">
-                <div class="teachLevel">Bachelor 3</div>
-                <div class="teachItem">Méthodologie et statistiques inférentielles <span class="teachType">(Tutorials &middot; 48 h)</span></div>
-              </div>
-            </li>
-          </ul>
-        </div>
-      </details>
-
-      <!-- ===== EDUCATION ===== -->
-      <details class="card section sectionToggle" id="education" open>
-        <summary class="sectionSummary">Education</summary>
-        <div class="sectionBody">
-          <div class="eduItem">
-            <div class="confTitle"><strong>PhD</strong> - Psychology</div>
-            <div class="muted confMeta">Marie et Louis Pasteur University, France &middot; 2021 &ndash; 2025</div>
-            <div class="confCite">
-              <span class="me">Dendauw, E.</span> (2025). <em>From choice to action: Toward a unified theory of decision and motor mechanisms</em> (Doctoral dissertation).
-              <a href="https://theses.fr/s344796">https://theses.fr/s344796</a>
+                    <li>
+                        <div class="confTitle">
+                            <strong>22nd <a href="https://www.escop.eu/">ESCoP</a> Conference</strong>
+                        </div>
+                        <div class="muted confMeta">Lille, France &middot; 2022 &middot; Poster</div>
+                        <div class="confCite">
+                            <span class="me">E. Dendauw</span>, N. J. Evans, G. D. Gordon, T. Gajdos, &amp; M. Servant.
+                            A dual-stage dual-threshold evidence accumulation theory for decision making, motor preparation, and motor execution.
+                        </div>
+                    </li>
+                </ul>
+                <p class="muted confNote">* <a href="https://www.escop.eu/">ESCoP</a> = European Society for Cognitive Psychology.</p>
             </div>
-          </div>
-          <div class="eduItem">
-            <div><strong>Master's degree</strong> - Cognitive Science for Business</div>
-            <p class="eduMeta muted">University of Lille, France &middot; 2019 &ndash; 2021</p>
-          </div>
+        </details>
 
-          <div class="eduItem">
-            <div><strong>Bachelor's degree</strong> - Mathematics and Computer Science Applied to the Humanities and Social Sciences</div>
-            <p class="eduMeta muted">University of Lille, France &middot; 2016 &ndash; 2019</p>
-          </div>
+        <!-- ===== TEACHING ===== -->
+        <details class="card section sectionToggle" id="teaching" open>
+            <summary class="sectionSummary">Teaching (348 h)</summary>
+            <div class="sectionBody">
+                <p class="muted">Department of Psychology, Université Marie et Louis Pasteur, France.</p>
 
-          <hr class="subDivider">
-          <div class="eduItem">
-            <div><strong>Summer School</strong> - Model-Based Neuroscience and Cognition Summer School</div>
-            <p class="eduMeta muted">University of Amsterdam, Netherlands &middot; 2024</p>
-          </div>
-        </div>
-      </details>
+                <ul class="teachList">
+                    <li class="teachYear">
+                        <div class="teachWhen" data-range="2024–2025"><span>2025</span><span class="teachDash">-</span><span>2024</span></div>
+                        <div class="teachWhat">
+                            <div class="teachLevel">Master 1</div>
+                            <div class="teachItem">Méthodes et outils <span class="teachType">(Tutorials &middot; 12 h)</span></div>
 
-      <!-- ================= FOOTER / CONTACT ================= -->
-      <footer class="footer card" id="contact">
-        <div class="footerGrid">
-          <div>
-            <div class="footerTopRow muted">
-              <p class="footerQuoteInline">
-                “Great things are not achieved by impulse alone, but are a series of small things that add up.”<br>
-                <em>Vincent van Gogh, 1882</em>
-              </p>
-              <a class="toTop" href="#top">Back to top</a>
+                            <div class="teachLevel">Bachelor 3</div>
+                            <div class="teachItem">Évaluation et outils diagnostics <span class="teachType">(Lecture &middot; 8 h)</span></div>
+                            <div class="teachItem">Méthodologie et statistiques inférentielles <span class="teachType">(Tutorials &middot; 48 h)</span></div>
+                            <div class="teachItem">Neurosciences intégratives <span class="teachType">(Lab &middot; 36 h)</span></div>
+
+                            <div class="teachLevel">Bachelor 2</div>
+                            <div class="teachItem">Statistiques inférentielles <span class="teachType">(Tutorials &middot; 36 h)</span></div>
+
+                            <div class="teachLevel">Bachelor 1</div>
+                            <div class="teachItem">Introduction à la psychologie cognitive et neuropsychologie <span class="teachType">(Tutorials &middot; 36 h)</span></div>
+                        </div>
+                    </li>
+
+                    <li class="teachYear">
+                        <div class="teachWhen" data-range="2023–2024"><span>2024</span><span class="teachDash">-</span><span>2023</span></div>
+                        <div class="teachWhat">
+                            <div class="teachLevel">Bachelor 3</div>
+                            <div class="teachItem">Méthodologie et statistiques inférentielles <span class="teachType">(Tutorials &middot; 24 h)</span></div>
+                            <div class="teachItem">Neurosciences intégratives <span class="teachType">(Lab &middot; 36 h)</span></div>
+                        </div>
+                    </li>
+
+                    <li class="teachYear">
+                        <div class="teachWhen" data-range="2022–2023"><span>2023</span><span class="teachDash">-</span><span>2022</span></div>
+                        <div class="teachWhat">
+                            <div class="teachLevel">Bachelor 3</div>
+                            <div class="teachItem">Méthodologie et statistiques inférentielles <span class="teachType">(Tutorials &middot; 24 h)</span></div>
+                            <div class="teachItem">Neurosciences intégratives <span class="teachType">(Lab &middot; 36 h)</span></div>
+                        </div>
+                    </li>
+
+                    <li class="teachYear">
+                        <div class="teachWhen" data-range="2021–2022"><span>2022</span><span class="teachDash">-</span><span>2021</span></div>
+                        <div class="teachWhat">
+                            <div class="teachLevel">Bachelor 3</div>
+                            <div class="teachItem">Méthodologie et statistiques inférentielles <span class="teachType">(Tutorials &middot; 48 h)</span></div>
+                        </div>
+                    </li>
+                </ul>
             </div>
-          </div>
-          <div>
-            <div class="footerMetaRow muted">
-              <span class="footerLegal">
-                © 2025 Edouard Dendauw &middot;
-                <a href="https://creativecommons.org/licenses/by/4.0/deed.en">Content CC BY 4.0</a> &middot;
-                <a href="https://mit-license.org/">Code MIT</a>
-              </span>
+        </details>
+
+        <!-- ===== EDUCATION ===== -->
+        <details class="card section sectionToggle" id="education" open>
+            <summary class="sectionSummary">Education (PhD)</summary>
+            <div class="sectionBody">
+                <div class="eduItem">
+                    <div class="confTitle"><strong>PhD</strong> in Psychology</div>
+                    <div class="muted confMeta">Marie et Louis Pasteur University, France &middot; 2021 &ndash; 2025</div>
+                    <div class="confCite">
+                        <span class="me">Dendauw, E.</span> (2025). <em>From choice to action: Toward a unified theory of decision and motor mechanisms</em> (Doctoral dissertation).
+                        <a href="https://theses.fr/s344796">https://theses.fr/s344796</a>
+                    </div>
+                </div>
+                <div class="eduItem">
+                    <div><strong>Master's degree</strong> - Cognitive Science for Business</div>
+                    <p class="eduMeta muted">University of Lille, France &middot; 2019 &ndash; 2021</p>
+                </div>
+
+                <div class="eduItem">
+                    <div><strong>Bachelor's degree</strong> - Mathematics and Computer Science Applied to the Humanities and Social Sciences</div>
+                    <p class="eduMeta muted">University of Lille, France &middot; 2016 &ndash; 2019</p>
+                </div>
+
+                <hr class="subDivider">
+                <div class="eduItem">
+                    <div><strong>Summer School</strong> - Model-Based Neuroscience and Cognition Summer School</div>
+                    <p class="eduMeta muted">University of Amsterdam, Netherlands &middot; 2024</p>
+                </div>
             </div>
-          </div>
-        </div>
-      </footer>
+        </details>
+
+        <!-- ================= FOOTER / CONTACT ================= -->
+        <footer class="footer card" id="contact">
+            <div class="footerGrid">
+                <div class="footerTopRow muted">
+                    <blockquote class="footerQuoteInline">
+                        <q><span>Research is to see what everybody has seen</span><wbr>
+                            <span> and think what nobody has thought.</span></q><br>
+                        — Albert Szent-Györgyi (1957). <cite>Bioenergetics</cite>.
+                    </blockquote>
+                    <a class="toTop" href="#top">Back to top</a>
+                </div>
+                <div class="footerMetaRow muted">
+                    <span class="footerLegal">
+                        &copy; 2025 Edouard Dendauw &middot;
+                        <a href="https://creativecommons.org/licenses/by/4.0/deed.en">Content CC BY 4.0</a> &middot;
+                        <a href="https://mit-license.org/">Code MIT</a>
+                    </span>
+                </div>
+            </div>
+        </footer>
     </main>
-  </div>
+</div>
 
-  <!-- ================= SCRIPTS ================= -->
-  <script>
+<!-- ================= SCRIPTS ================= -->
+<script>
     const headerEl = document.querySelector(".header");
 
     function updateHeaderHeight(){
@@ -964,8 +1016,8 @@
       localStorage.setItem("theme", next);
       applyTheme(next);
     });
-  </script>
-  <script>
+</script>
+<script>
     const images = [
       "assets/perso1.png",
       "assets/perso2.png",
@@ -977,6 +1029,6 @@
     const avatar = document.getElementById("avatar");
     const pick = images[Math.floor(Math.random() * images.length)];
     avatar.src = pick;
-  </script>
+</script>
 </body>
 </html>
